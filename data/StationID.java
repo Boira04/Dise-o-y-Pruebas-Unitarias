@@ -27,3 +27,8 @@ public class StationID implements StationIDInterface {
         return "Geographic point {" + "ID='" + ID + '\'' + "geoPoint='" + geoPoint.toString() + '}';
     }
 }
+
+
+
+
+

@@ -1,3 +1,5 @@
+package data.data;
+
 public class StationID implements StationIDInterface {
     private final int ID;
     private final GeographicPointInterface geoPoint;

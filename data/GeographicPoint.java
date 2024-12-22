@@ -1,4 +1,5 @@
-package data;
+package data.data;
+
 /**
  * Essential data classes
  */

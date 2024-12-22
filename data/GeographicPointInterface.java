@@ -1,4 +1,4 @@
-package data;
+package data.data;
 
 /**
  * Interfície per definir les operacions essencials d'un punt geogràfic.

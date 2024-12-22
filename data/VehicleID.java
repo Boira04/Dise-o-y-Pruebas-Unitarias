@@ -1,3 +1,5 @@
+package data.data;
+
 import java.util.Objects;
 
 /**
@@ -42,7 +44,7 @@ public final class VehicleID {
 
     @Override
     public String toString() {
-        return "VehicleID{" +
+        return "data.data.VehicleID{" +
                 "id=" + id +
                 ", location=" + station.toString() +
                 '}';

@@ -1,19 +1,19 @@
-public class StationID {
+public class StationID implements StationIDInterface {
     private final int ID;
-    private final GeographicPoint geoPoint;
+    private final GeographicPointInterface geoPoint;
 
-    public StationID(int ID, GeographicPoint geoPoint){
+    public StationID(int ID, GeographicPointInterface geoPoint){
         this.ID = ID;
         this.geoPoint = geoPoint;
     }
     public int getID(){return ID;}
-    public GeographicPoint getgeoPoint(){return geoPoint;}
+    public GeographicPointInterface getgeoPoint(){return geoPoint;}
     public boolean equals (Object o) {
         boolean eq;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StationID gP = (StationID) o;
-        eq = ((ID == gP.ID) && (GeographicPoint == gP.GeographicPoint));
+        eq = (ID == gP.ID) && (geoPoint.equals(gP.geoPoint));
         return eq;
     }
     public int hashCode() {

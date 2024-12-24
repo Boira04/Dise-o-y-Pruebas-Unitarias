@@ -1,8 +1,6 @@
 package data.data;
 
 import data.data.VehicleID;
-import data.data.StationID;
-import data.data.GeographicPoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,15 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class VehicleIDTest {
     private VehicleID vehicle1;
     private VehicleID vehicle2;
-    private StationID station1;
-    private StationID station2;
+    private StationIDdoble station1;
+    private StationIDdoble station2;
+
 
     @BeforeEach
     void setUp() {
-        GeographicPoint geoPoint1 = new GeographicPoint(37.7749f, -122.4194f); // San Francisco
-        GeographicPoint geoPoint2 = new GeographicPoint(34.0522f, -118.2437f); // Los Angeles
-        station1 = new StationID(1, geoPoint1);
-        station2 = new StationID(2, geoPoint2);
+        station1 = new StationIDdoble();
+        station2 = new StationIDdoble();
         vehicle1 = new VehicleID(100, station1);
         vehicle2 = new VehicleID(200, station2);
     }

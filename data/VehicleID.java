@@ -2,23 +2,20 @@ package data.data;
 
 import java.util.Objects;
 
-/**
- * Classe immutable que representa un identificador de vehicle.
- * Accepta qualsevol objecte que implementi la interfície LocationProvider.
- */
+
 public final class VehicleID {
     private final int id;
     private final StationIDInterface station;
 
-    public VehicleID(int id, StationIDInterface locationProvider) {
-        if (locationProvider == null) {
-            throw new IllegalArgumentException("La ubicació no pot ser null.");
+    public VehicleID(int id, StationIDInterface station) {
+        if (station == null) {
+            throw new IllegalArgumentException("La estació no pot ser null.");
         }
         if (id <= 0) {
             throw new IllegalArgumentException("L'ID del vehicle ha de ser un nombre positiu.");
         }
         this.id = id;
-        this.station = locationProvider;
+        this.station = station;
     }
 
     public int getId() {
@@ -46,7 +43,7 @@ public final class VehicleID {
     public String toString() {
         return "data.data.VehicleID{" +
                 "id=" + id +
-                ", location=" + station.toString() +
+                ", station=" + station.toString() +
                 '}';
     }
 }

@@ -54,7 +54,7 @@ class VehicleIDTest {
     void testExceptionHandling() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             // Code that is expected to throw IllegalArgumentException
-            VehickeID vehicke3 = new VehicleID(-1, station1);
+            VehicleID vehicle3 = new VehicleID(-1, station1);
         });
         assertEquals("L'ID del vehicle ha de ser un nombre positiu.", exception.getMessage());
     }

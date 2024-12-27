@@ -6,21 +6,18 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import data.data.GeographicPoint;
-import data.data.StationID;
-import data.data.UserAccount;
-import data.data.VehicleID;
+import data.data.*;
 import data.data.JourneyService;
 
 public class Server implements data.services.ServerInterface {
     // Almacenamiento simulado para datos persistentes
-    private final Map<VehicleID, Boolean> vehicleAvailability = new HashMap<>();
-    private final Map<VehicleID, GeographicPoint> vehicleLocations = new HashMap<>();
-    private final Map<VehicleID, StationID> vehicleStation = new HashMap<>();
-    private final Map<UserAccount, JourneyService> userJourneyRecords = new HashMap<>();
+    private final Map<VehicleIDInterface, Boolean> vehicleAvailability = new HashMap<>();
+    private final Map<VehicleIDInterface, GeographicPointInterface> vehicleLocations = new HashMap<>();
+    private final Map<VehicleIDInterface, StationIDInterface> vehicleStation = new HashMap<>();
+    private final Map<UserAccountInterface, JourneyService> userJourneyRecords = new HashMap<>();
 
     @Override
-    public void checkPMVAvail(VehicleID vhID) throws PMVNotAvailException, ConnectException {
+    public void checkPMVAvail(VehicleIDInterface vhID) throws PMVNotAvailException, ConnectException {
         if (!vehicleAvailability.containsKey(vhID)) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
         }
@@ -30,7 +27,7 @@ public class Server implements data.services.ServerInterface {
     }
 
     @Override
-    public void registerPairing(UserAccount user, VehicleID veh, StationID st, GeographicPoint loc, LocalDateTime date)
+    public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date)
             throws InvalidPairingArgsException, ConnectException {
         if (!vehicleAvailability.containsKey(veh.getId())) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
@@ -46,8 +43,7 @@ public class Server implements data.services.ServerInterface {
     }
 
     @Override
-    public void stopPairing(UserAccount user, VehicleID veh, StationID st, GeographicPoint loc, LocalDateTime date,
-                            float avSp, float dist, int dur, BigDecimal imp)
+    public void stopPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, float avSp, float dist, int dur, BigDecimal imp)
             throws InvalidPairingArgsException, ConnectException {
         if (!vehicleAvailability.containsKey(veh.getId())) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
@@ -70,7 +66,7 @@ public class Server implements data.services.ServerInterface {
     }
 
     @Override
-    public void setPairing(UserAccount user, VehicleID veh, StationID st, GeographicPoint loc, LocalDateTime date) {
+    public void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date) {
         vehicleAvailability.put(veh, false);
         vehicleLocations.put(veh, loc);
     }
@@ -85,7 +81,7 @@ public class Server implements data.services.ServerInterface {
     }
 
     @Override
-    public void registerLocation(VehicleID veh, StationID st) {
-        vehicleLocations.put(veh, new GeographicPoint(0, 0)); // Example default location
+    public void registerLocation(VehicleIDInterface veh, StationIDInterface st) {
+        vehicleStation.put(veh, st); // Example default location
     }
 }

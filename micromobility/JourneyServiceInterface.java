@@ -1,4 +1,4 @@
-package data.services;
+package data.micromobility;
 
 import data.data.GeographicPointInterface;
 

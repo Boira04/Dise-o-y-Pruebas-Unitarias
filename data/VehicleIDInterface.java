@@ -1,8 +1,6 @@
 package data.data;
 
-import java.util.Objects;
-
-public interface VheicleIDInterface {
+public interface VehicleIDInterface {
     public int getId();
     public StationIDInterface getStation();
 

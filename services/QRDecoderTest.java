@@ -1,7 +1,7 @@
 package data.services;
 
 import data.data.VehicleIDdoble;
-import data.data.VheicleIDInterface;
+import data.data.VehicleIDInterface;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,12 @@ class QRDecoderTest {
 
     @Test
     void testGetVehicleIDSuccess() throws CorruptedImgException {
-        VheicleIDInterface vehicle = new VehicleIDdoble();
+        VehicleIDInterface vehicle = new VehicleIDdoble();
         QRDecoderImpl qrDecoder = new QRDecoderImpl(vehicle);
 
         BufferedImage mockImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
 
-        VheicleIDInterface result = qrDecoder.getVehicleID(mockImage);
+        VehicleIDInterface result = qrDecoder.getVehicleID(mockImage);
 
         assertNotNull(result, "The returned vehicle should not be null.");
         assertEquals(vehicle, result, "The returned vehicle should match the initialized vehicle.");
@@ -26,7 +26,7 @@ class QRDecoderTest {
 
     @Test
     void testGetVehicleIDFailureNullImage() {
-        VheicleIDInterface vehicle = new VehicleIDdoble();
+        VehicleIDInterface vehicle = new VehicleIDdoble();
         QRDecoderImpl qrDecoder = new QRDecoderImpl(vehicle);
 
         Exception exception = assertThrows(CorruptedImgException.class, () -> qrDecoder.getVehicleID(null),

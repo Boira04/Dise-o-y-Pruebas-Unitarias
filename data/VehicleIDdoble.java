@@ -1,6 +1,6 @@
 package data.data;
 
-public class VehicleIDdoble implements VheicleIDInterface{
+public class VehicleIDdoble implements VehicleIDInterface {
     @Override
     public int getId() {
         return 3;

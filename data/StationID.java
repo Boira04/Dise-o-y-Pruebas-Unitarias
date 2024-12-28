@@ -7,9 +7,6 @@ public class StationID implements StationIDInterface {
     public StationID(int ID, GeographicPointInterface geoPoint){
         this.ID = ID;
         this.geoPoint = geoPoint;
-        if (ID == null) {
-            throw new IllegalArgumentException("La ID no pot ser buida.");
-        }
         if (ID <= 0) {
             throw new IllegalArgumentException("L'ID de la estació ha de ser un nombre positiu.");
         }

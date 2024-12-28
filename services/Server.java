@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import data.data.*;
-import data.data.JourneyServiceInterface;
+import data.micromobility.JourneyServiceInterface;
 
 public class Server implements data.services.ServerInterface {
     // Almacenamiento simulado para datos persistentes
@@ -27,7 +27,7 @@ public class Server implements data.services.ServerInterface {
     }
 
     @Override
-    public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date)
+    public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, JourneyServiceInterface journey)
             throws InvalidPairingArgsException, ConnectException {
         if (!vehicleAvailability.containsKey(veh.getId())) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
@@ -47,7 +47,6 @@ public class Server implements data.services.ServerInterface {
         }
 
         vehicleAvailability.put(veh, false); // Marquem el vehicle a no disponible
-        JourneyServiceInterface journey = new JourneyServiceInterface();
         journey.setServiceInit(date, loc);
         userJourneyRecords.put(user, journey);
     }

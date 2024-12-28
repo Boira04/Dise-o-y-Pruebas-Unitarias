@@ -8,7 +8,6 @@ import java.net.ConnectException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
-import java.time.chrono.ChronoLocalDate;
 
 public class JourneyRealizeHandler {
 
@@ -21,7 +20,7 @@ public class JourneyRealizeHandler {
     private BufferedImage qrImage;
     private UserAccountInterface user;
     private StationIDInterface station;
-    private StationIDInterface newStation;
+    private final StationIDInterface initialStation;
     private GeographicPointInterface location;
     private GeographicPointInterface initialLocation;
     private VehicleIDInterface vehicleID;
@@ -31,25 +30,31 @@ public class JourneyRealizeHandler {
     private BigDecimal amount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private JourneyServiceInterface journey;
 
-    public JourneyRealizeHandler(QRDecoder qrDecoder, Server server) {
+    public JourneyRealizeHandler(QRDecoder qrDecoder, ServerInterface server, StationIDInterface initialStation) {
         this.qrDecoder = qrDecoder;
         this.server = server;
+        this.station = initialStation;
+        this.initialStation = initialStation;
     }
 
     public void scanQR()
             throws ConnectException, InvalidPairingArgsException, CorruptedImgException, PMVNotAvailException, ProceduralException {
         try {
+            if (qrImage == null){
+                throw new ProceduralException("La imagen del QR no existe.");
+            }
             // 1. Decodificar el QR para obtener el VehicleID
-            VehicleIDInterface vehicleID = qrDecoder.getVehicleID(qrImage);
+            vehicleID = qrDecoder.getVehicleID(qrImage);
 
             // 2. Verificar disponibilidad del vehículo
             server.checkPMVAvail(vehicleID);
 
             // 3. Registrar el emparejamiento
-            server.registerPairing(user, vehicleID, station, location, LocalDateTime.now());
+            server.registerPairing(user, vehicleID, station, location, LocalDateTime.now(), journey);
 
-            initialLocation = vehicleID.getStation().getgeoPoint(); // Guardamos la posicion inicial para calcular la distancia posteriormente
+            initialLocation = station.getgeoPoint(); // Guardamos la posicion inicial para calcular la distancia posteriormente
 
         } catch (CorruptedImgException e) {
             throw new CorruptedImgException("La imagen del QR no es válida.");
@@ -76,6 +81,7 @@ public class JourneyRealizeHandler {
             }
 
             server.stopPairing(user, vehicleID, station, location, LocalDateTime.now(), averageSpeed, distance, duration, amount);
+            calculateImport (distance, duration, averageSpeed, endDate);
 
         } catch (PairingNotFoundException e) {
             throw new PairingNotFoundException("No se encontró el registro de emparejamiento en el servidor.");
@@ -102,6 +108,7 @@ public class JourneyRealizeHandler {
 
             // Actualizar la estación activa en el manejador
             this.station = stID;
+            this.location = station.getgeoPoint();
 
         } catch (ConnectException e) {
             throw new ConnectException("Error al recibir el ID de la estación: " + e.getMessage());
@@ -122,24 +129,14 @@ public class JourneyRealizeHandler {
     public void stopDriving ()
             throws ConnectException, ProceduralException
     {
-        try {
-            if (vehicleID == null) {
-                throw new ProceduralException("Error: No se ha configurado un vehículo para detener el desplazamiento.");
-            }
-
-            if (newStation == null) {
-                throw new ConnectException("Error: No se pudo establecer la desconexión Bluetooth.");
-            } else {
-                station = newStation;
-                location = newStation.getgeoPoint(); // Guardamos el punto en el que termina el trayecto para calcular la distancia posteriormente
-                newStation = null;
-            }
-
-            System.out.println("El desplazamiento se ha detenido con el vehículo: " + vehicleID);
-
-        } catch (ConnectException e) {
-            throw new ConnectException("Error al desconectar el vehículo: " + e.getMessage());
+        if (vehicleID == null) {
+            throw new ProceduralException("Error: No se ha configurado un vehículo para detener el desplazamiento.");
         }
+
+
+        calculateValues (location, endDate);
+        System.out.println("El desplazamiento se ha detenido con el vehículo: " + vehicleID);
+
     }
     // Internal operations
     private void calculateValues (GeographicPointInterface gP, LocalDateTime date)
@@ -206,6 +203,13 @@ public class JourneyRealizeHandler {
         return this.duration;
     }
 
+    public float getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public BigDecimal getAmount(){
+        return amount;
+    }
     public void setQrImage(BufferedImage qrImage) {
         this.qrImage = qrImage;
     }
@@ -242,9 +246,6 @@ public class JourneyRealizeHandler {
         this.amount = amount;
     }
 
-    public void setNewStation(StationIDInterface newStation) {
-        this.newStation = newStation;
-    }
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
@@ -252,6 +253,10 @@ public class JourneyRealizeHandler {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public void setJourney(JourneyServiceInterface journey) {
+        this.journey = journey;
     }
 }
 

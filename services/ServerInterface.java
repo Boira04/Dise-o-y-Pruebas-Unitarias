@@ -17,7 +17,7 @@ public interface ServerInterface {
             throws InvalidPairingArgsException, ConnectException;
     // Internal operations
     void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date);
-    void unPairRegisterService(JourneyService s)
+    void unPairRegisterService(JourneyServiceInterface s)
             throws PairingNotFoundException;
     void registerLocation(VehicleIDInterface veh, StationIDInterface st);
 }

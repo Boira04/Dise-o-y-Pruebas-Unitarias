@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import data.data.*;
-import data.data.JourneyService;
+import data.data.JourneyServiceInterface;
 
 public class Server implements data.services.ServerInterface {
     // Almacenamiento simulado para datos persistentes
     private final Map<VehicleIDInterface, Boolean> vehicleAvailability = new HashMap<>();
     private final Map<VehicleIDInterface, GeographicPointInterface> vehicleLocations = new HashMap<>();
     private final Map<VehicleIDInterface, StationIDInterface> vehicleStation = new HashMap<>();
-    private final Map<UserAccountInterface, JourneyService> userJourneyRecords = new HashMap<>();
+    private final Map<UserAccountInterface, JourneyServiceInterface> userJourneyRecords = new HashMap<>();
 
     @Override
     public void checkPMVAvail(VehicleIDInterface vhID) throws PMVNotAvailException, ConnectException {
@@ -32,14 +32,24 @@ public class Server implements data.services.ServerInterface {
         if (!vehicleAvailability.containsKey(veh.getId())) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
         }
-        if (!vehicleLocations.containsKey(loc) || !vehicleStation.containsKey(st)) {
-            throw new InvalidPairingArgsException("Vehicle ID or location not registered in the server.");
+        if (!vehicleStation.containsKey(veh.getStation()) || !vehicleLocations.containsKey(loc)) {
+            throw new InvalidPairingArgsException("Station or location not registered in the server.");
         }
-        if (!vehicleLocations.get(veh).equals(loc)) {
-            throw new InvalidPairingArgsException("Provided location does not match the vehicle's actual location.");
+
+        StationIDInterface currentStation = veh.getStation();
+        if (!currentStation.equals(st)) {
+            throw new InvalidPairingArgsException("The provided station does not match the vehicle's registered station.");
         }
-        vehicleAvailability.put(veh, false); // Mark vehicle as unavailable
-        userJourneyRecords.put(user, new JourneyService()); // Initialize journey for user
+
+        GeographicPointInterface stationLocation = st.getgeoPoint();
+        if (!stationLocation.equals(loc)) {
+            throw new InvalidPairingArgsException("The provided location does not match the location of the station.");
+        }
+
+        vehicleAvailability.put(veh, false); // Marquem el vehicle a no disponible
+        JourneyServiceInterface journey = new JourneyServiceInterface();
+        journey.setServiceInit(date, loc);
+        userJourneyRecords.put(user, journey);
     }
 
     @Override
@@ -48,40 +58,45 @@ public class Server implements data.services.ServerInterface {
         if (!vehicleAvailability.containsKey(veh.getId())) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
         }
-        if (!vehicleLocations.containsKey(loc) || !vehicleStation.containsKey(st)) {
-            throw new InvalidPairingArgsException("Vehicle ID or location not registered in the server.");
+        if (!vehicleStation.containsKey(veh.getStation()) || !vehicleLocations.containsKey(loc)) {
+            throw new InvalidPairingArgsException("Station or location not registered in the server.");
         }
-        if (!vehicleLocations.get(veh).equals(loc)) {
-            throw new InvalidPairingArgsException("Provided location does not match the vehicle's actual location.");
+
+        StationIDInterface currentStation = veh.getStation();
+        if (!currentStation.equals(st)) {
+            throw new InvalidPairingArgsException("The provided station does not match the vehicle's registered station.");
         }
-        if (!userJourneyRecords.containsKey(user)) {
-            throw new InvalidPairingArgsException("No pairing record found for the user.");
+
+        GeographicPointInterface stationLocation = st.getgeoPoint();
+        if (!stationLocation.equals(loc)) {
+            throw new InvalidPairingArgsException("The provided location does not match the location of the station.");
         }
-        // Update vehicle state and location
+
         vehicleAvailability.put(veh, true);
         vehicleLocations.put(veh, loc);
-        // Record the journey details
-        JourneyService journey = userJourneyRecords.get(user);
-        journey.setServiceFinish(); // Assuming setServiceFinish finalizes the service
+
+        JourneyServiceInterface journey = userJourneyRecords.get(user);
+        journey.setServiceFinish(date, loc, imp, avSp, dist, dur);
     }
 
     @Override
     public void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date) {
         vehicleAvailability.put(veh, false);
         vehicleLocations.put(veh, loc);
+        vehicleStation.put(veh, st);
     }
 
     @Override
-    public void unPairRegisterService(JourneyService s) throws PairingNotFoundException {
+    public void unPairRegisterService(JourneyServiceInterface s) throws PairingNotFoundException {
         if (!userJourneyRecords.containsValue(s)) {
             throw new PairingNotFoundException("No matching journey service record found.");
         }
-        // Simulate unpairing process
+
         userJourneyRecords.values().remove(s);
     }
 
     @Override
     public void registerLocation(VehicleIDInterface veh, StationIDInterface st) {
-        vehicleStation.put(veh, st); // Example default location
+        vehicleStation.put(veh, st);
     }
 }

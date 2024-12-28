@@ -4,6 +4,8 @@ import data.data.GeographicPointInterface;
 import data.data.StationIDInterface;
 import data.data.UserAccountInterface;
 import data.data.VehicleIDInterface;
+import data.micromobility.JourneyServiceInterface;
+
 
 import java.math.BigDecimal;
 import java.net.ConnectException;
@@ -21,7 +23,7 @@ public class ServerDoble implements ServerInterface {
     }
 
     @Override
-    public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date) throws InvalidPairingArgsException, ConnectException {
+    public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, JourneyServiceInterface journey) throws InvalidPairingArgsException, ConnectException {
         contRegister++;
     }
 

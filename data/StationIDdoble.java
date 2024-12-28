@@ -8,7 +8,7 @@ public class StationIDdoble implements StationIDInterface {
 
     @Override
     public GeographicPointInterface getgeoPoint() {
-        return null;
+        return new GeographicPointDoble();
     }
     public boolean equals (Object o){
         return this == o;

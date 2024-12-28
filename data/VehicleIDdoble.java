@@ -8,7 +8,7 @@ public class VehicleIDdoble implements VehicleIDInterface {
 
     @Override
     public StationIDInterface getStation() {
-        return null;
+        return new StationIDdoble();
     }
     public boolean equals (Object o){
         return this == o;

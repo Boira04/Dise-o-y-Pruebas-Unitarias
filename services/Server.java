@@ -1,5 +1,6 @@
 package data.services;
 
+import java.awt.desktop.SystemEventListener;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.time.LocalDateTime;
@@ -29,12 +30,6 @@ public class Server implements data.services.ServerInterface {
     @Override
     public void registerPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, JourneyServiceInterface journey)
             throws InvalidPairingArgsException, ConnectException {
-        if (!vehicleAvailability.containsKey(veh.getId())) {
-            throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
-        }
-        if (!vehicleStation.containsKey(veh.getStation()) || !vehicleLocations.containsKey(loc)) {
-            throw new InvalidPairingArgsException("Station or location not registered in the server.");
-        }
 
         StationIDInterface currentStation = veh.getStation();
         if (!currentStation.equals(st)) {
@@ -47,6 +42,8 @@ public class Server implements data.services.ServerInterface {
         }
 
         vehicleAvailability.put(veh, false); // Marquem el vehicle a no disponible
+        vehicleLocations.put(veh, loc);
+        vehicleStation.put(veh, st);
         journey.setServiceInit(date, loc);
         userJourneyRecords.put(user, journey);
     }
@@ -54,10 +51,10 @@ public class Server implements data.services.ServerInterface {
     @Override
     public void stopPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, float avSp, float dist, int dur, BigDecimal imp)
             throws InvalidPairingArgsException, ConnectException {
-        if (!vehicleAvailability.containsKey(veh.getId())) {
+        if (!vehicleAvailability.containsKey(veh)) {
             throw new ConnectException("Connection failed: Vehicle ID not found in the server.");
         }
-        if (!vehicleStation.containsKey(veh.getStation()) || !vehicleLocations.containsKey(loc)) {
+        if (!vehicleStation.containsKey(veh) || !vehicleLocations.containsValue(loc)) {
             throw new InvalidPairingArgsException("Station or location not registered in the server.");
         }
 
@@ -74,15 +71,19 @@ public class Server implements data.services.ServerInterface {
         vehicleAvailability.put(veh, true);
         vehicleLocations.put(veh, loc);
 
+        System.out.println(userJourneyRecords);
         JourneyServiceInterface journey = userJourneyRecords.get(user);
         journey.setServiceFinish(date, loc, imp, avSp, dist, dur);
     }
 
     @Override
-    public void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date) {
+    public void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, JourneyServiceInterface journey) {
         vehicleAvailability.put(veh, false);
         vehicleLocations.put(veh, loc);
         vehicleStation.put(veh, st);
+        journey.setServiceInit(date, loc);
+        userJourneyRecords.put(user, journey);
+
     }
 
     @Override

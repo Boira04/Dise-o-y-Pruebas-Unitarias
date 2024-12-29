@@ -17,9 +17,8 @@ public interface ServerInterface {
     void stopPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, float avSp, float dist, int dur, BigDecimal imp)
             throws InvalidPairingArgsException, ConnectException;
     // Internal operations
-    void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date);
+    void setPairing(UserAccountInterface user, VehicleIDInterface veh, StationIDInterface st, GeographicPointInterface loc, LocalDateTime date, JourneyServiceInterface journey);
     void unPairRegisterService(JourneyServiceInterface s)
             throws PairingNotFoundException;
     void registerLocation(VehicleIDInterface veh, StationIDInterface st);
 }
-

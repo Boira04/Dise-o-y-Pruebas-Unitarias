@@ -48,8 +48,9 @@ class VehicleIDTest {
 
     @Test
     void testToString() {
-        assertEquals("data.data.VehicleID{id=100, location=Geographic point {ID='1geoPoint='Geographic point {latitude='37.7749longitude='-122.4194'}}}", vehicle1.toString());
+        assertEquals("data.data.VehicleID{id=100, station=StationID {ID='1', geoPoint='Geographic point {latitude='46.7158', longitude='52.7335'}'}}", vehicle1.toString());
     }
+
     @Test
     void testExceptionHandling() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {

@@ -47,11 +47,12 @@ class StationIDTest {
 
     @Test
     void testToString() {
-        assertEquals("Geographic point {ID='1geoPoint='Geographic point {latitude='48.8566longitude='2.3522'}}", station1.toString());
+        assertEquals("StationID {ID='1'geoPoint='Geographic point {latitude='46.7158', longitude='52.7335'}}", station1.toString());
     }
-    @Test void testExceptionHandling() { Exception exception = assertThrows(IllegalArgumentException.class, () -> { 
+
+    @Test void testExceptionHandling() { Exception exception = assertThrows(IllegalArgumentException.class, () -> {
         // Code that is expected to throw IllegalArgumentException 
         StationID station3 = new StationID(-1, geoPoint1);
-    }); 
+    });
         assertEquals("L'ID de la estació ha de ser un nombre positiu.", exception.getMessage()); }
 }

@@ -11,16 +11,17 @@ public class StationIDdoble2 implements StationIDInterface {
         return new GeographicPointDoble2();
     }
 
-    public boolean equals(Object o) {
-        return this == o;
+    public boolean equals (Object o){
+        StationIDInterface gP = (StationIDInterface) o;
+        return 2== gP.getID();
     }
-
     public int hashCode() {
         return 222;
     }
-
     public String toString() {
-        return "Geographic point {" + "ID='" + "2" + '\'' + "geoPoint='" + "Geographic point {" + "latitude='" + "44" + '\'' +
-                "longitude='" + "55" + '}' + '}';
+        return "StationID {" +
+                "ID='" + getID() + '\'' +
+                ", geoPoint='" + getgeoPoint() + '\'' +
+                '}';
     }
 }

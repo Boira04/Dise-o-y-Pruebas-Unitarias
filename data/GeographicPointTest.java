@@ -43,6 +43,6 @@ class GeographicPointTest {
 
     @Test
     void testToString() {
-        assertEquals("Geographic point {latitude='40.7128longitude='-74.006'}", point1.toString());
+        assertEquals("Geographic point {latitude='40.7128'longitude='-74.006}", point1.toString());
     }
 }

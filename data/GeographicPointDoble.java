@@ -11,14 +11,16 @@ public class GeographicPointDoble implements GeographicPointInterface{
         return 52.7335f;
     }
     public boolean equals (Object o){
-        return this == o;
+        GeographicPointInterface gP = (GeographicPointInterface) o;
+        return ((46.7158f == gP.getLatitude()) && (52.7335f == gP.getLongitude()));
     }
     public int hashCode(){
         return 221;
     }
-    public String toString(){
-        return "Geographic point {" + "latitude='" + "46.7158f" + '\'' +
-                "longitude='" + "52.7335f" + '}';
-
+    public String toString() {
+        return "Geographic point {" +
+                "latitude='" + getLatitude() + '\'' +
+                ", longitude='" + getLongitude() + '\'' +
+                '}';
     }
 }

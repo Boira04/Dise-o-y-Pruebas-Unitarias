@@ -16,12 +16,10 @@ public class VehicleIDdoble implements VehicleIDInterface {
     public int hashCode(){
         return 251;
     }
-    public String toString(){
+    public String toString() {
         return "data.data.VehicleID{" +
-                "id=" + "3" +
-                ", station=" + "Geographic point {" + "ID='" + "1" + '\'' + "geoPoint='" + "Geographic point {" + "latitude='" + "33" + '\'' +
-                "longitude='" + "22" + '}' + '}' +
+                "id=" + getId() +
+                ", station=" + getStation() +
                 '}';
-
     }
 }

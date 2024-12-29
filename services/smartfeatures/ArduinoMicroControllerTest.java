@@ -55,7 +55,7 @@ class ArduinoMicroControllerImplTest {
     void testStopDrivingSuccess() throws ConnectException, PMVPhisicalException, ProceduralException {
         controller.setBTconnection();
         controller.startDriving();
-        controller.stopDriving(); // No debería lanzar excepción
+        controller.stopDriving(); // Ejemplo: 10% de probabilidad de fallo técnico, implica que hay un 10% de posibilidades que esta parte de error en los test
     }
 
     @Test

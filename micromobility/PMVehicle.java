@@ -1,6 +1,7 @@
 package data.micromobility;
 
 import data.data.GeographicPoint;
+import data.data.GeographicPointInterface;
 import data.micromobility.PMVState;
 
 /**
@@ -9,11 +10,11 @@ import data.micromobility.PMVState;
 public class PMVehicle {
     // The class members
     private String vehicleID;
-    private GeographicPoint location;
+    private GeographicPointInterface location;
     private PMVState state;
 
     // Constructor
-    public PMVehicle(String vehicleID, GeographicPoint initialLocation, PMVState initialState) {
+    public PMVehicle(String vehicleID, GeographicPointInterface initialLocation, PMVState initialState) {
         if (vehicleID == null || vehicleID.isEmpty()) {
             throw new IllegalArgumentException("Vehicle ID cannot be null or empty.");
         }
@@ -34,7 +35,7 @@ public class PMVehicle {
         return vehicleID;
     }
 
-    public GeographicPoint getLocation() {
+    public GeographicPointInterface getLocation() {
         return location;
     }
 
@@ -55,7 +56,7 @@ public class PMVehicle {
         this.state = PMVState.Available;
     }
 
-    public void setLocation(GeographicPoint gP) {
+    public void setLocation(GeographicPointInterface gP) {
         if (gP == null) {
             throw new IllegalArgumentException("Location cannot be null.");
         }

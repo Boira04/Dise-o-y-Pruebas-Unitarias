@@ -1,6 +1,9 @@
 package data.micromobility;
 
 import data.data.GeographicPoint;
+import data.data.GeographicPointDoble;
+import data.data.GeographicPointDoble2;
+import data.data.GeographicPointInterface;
 import data.micromobility.PMVehicle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ public class PMVehicleTest {
 
     @BeforeEach
     void setUp() {
-        vehicle = new PMVehicle("VehicleID123", new GeographicPoint(41.40338F, 2.17403F), PMVState.Available);
+        vehicle = new PMVehicle("VehicleID123", new GeographicPointDoble(), PMVState.Available);
     }
 
     @Test
@@ -45,14 +48,14 @@ public class PMVehicleTest {
 
     @Test
     void testSetLocation() {
-        GeographicPoint newLocation = new GeographicPoint(42.3601f, -71.0589f); // Example coordinates
+        GeographicPointInterface newLocation = new GeographicPointDoble2(); // Example coordinates
         vehicle.setLocation(newLocation);
         assertEquals(newLocation, vehicle.getLocation(), "Location should match the new location set.");
     }
 
     @Test
     void testGetLocation() {
-        GeographicPoint initialLocation = new GeographicPoint(0, 0);
+        GeographicPointInterface initialLocation = new GeographicPointDoble();
         assertEquals(initialLocation, vehicle.getLocation(), "Initial location should match the one provided in the constructor.");
     }
 }

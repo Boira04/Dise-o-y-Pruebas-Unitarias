@@ -1,8 +1,9 @@
-package data.services;
+package data.services.smartfeatures;
 
 import data.data.VehicleIDdoble;
 import data.data.VehicleIDInterface;
 
+import data.services.CorruptedImgException;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;

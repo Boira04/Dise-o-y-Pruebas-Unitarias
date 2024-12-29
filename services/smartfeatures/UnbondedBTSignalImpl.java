@@ -1,4 +1,4 @@
-package data.services;
+package data.services.smartfeatures;
 
 
 import data.data.StationIDInterface;

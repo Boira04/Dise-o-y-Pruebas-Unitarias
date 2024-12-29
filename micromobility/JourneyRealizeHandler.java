@@ -2,6 +2,7 @@ package data.micromobility;
 
 import data.data.*;
 import data.services.*;
+import data.services.smartfeatures.QRDecoder;
 
 import java.awt.image.BufferedImage;
 import java.net.ConnectException;

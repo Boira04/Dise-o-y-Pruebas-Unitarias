@@ -2,6 +2,7 @@ package data.micromobility;
 
 import data.data.*;
 import data.services.*;
+import data.services.smartfeatures.QRDecoderDoble;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

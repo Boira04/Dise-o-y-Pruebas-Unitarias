@@ -1,6 +1,7 @@
-package data.services;
+package data.services.smartfeatures;
 
 import data.micromobility.ProceduralException;
+import data.services.PMVPhisicalException;
 
 import java.net.ConnectException;
 

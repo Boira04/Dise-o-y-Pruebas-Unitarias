@@ -1,7 +1,8 @@
-package data.services;
+package data.services.smartfeatures;
 
 import data.data.VehicleIDInterface;
 import data.data.VehicleIDdoble;
+import data.services.CorruptedImgException;
 
 import java.awt.image.BufferedImage;
 
